@@ -1,0 +1,885 @@
+import React, { useState } from 'react';
+import { ChevronDown, ChevronUp, Clock, Target, TrendingUp, Users, Mail, CheckCircle, ArrowRight, Star, Briefcase, Award, Zap, BarChart } from 'lucide-react';
+
+const ProposalSection = ({ title, icon: Icon, children, defaultOpen = false }) => {
+  const [isOpen, setIsOpen] = useState(defaultOpen);
+  
+  return (
+    <div className="mb-4 bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 transition-all duration-300 hover:shadow-lg">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full px-6 py-4 flex items-center justify-between bg-gradient-to-r from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 transition-all duration-300"
+      >
+        <div className="flex items-center gap-3">
+          <Icon className="text-blue-600" size={24} />
+          <h2 className="text-xl font-bold text-gray-800">{title}</h2>
+        </div>
+        {isOpen ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
+      </button>
+      <div
+        className={`transition-all duration-300 ease-in-out ${
+          isOpen ? 'max-h-[4000px] opacity-100' : 'max-h-0 opacity-0'
+        } overflow-hidden`}
+      >
+        <div className="px-6 py-5">{children}</div>
+      </div>
+    </div>
+  );
+};
+
+const BenefitCard = ({ icon: Icon, title, description, delay }) => {
+  return (
+    <div 
+      className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-lg border border-blue-200 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+      style={{ animation: `fadeIn 0.6s ease-out ${delay}s both` }}
+    >
+      <Icon className="text-blue-600 mb-3" size={32} />
+      <h3 className="font-bold text-lg mb-2 text-gray-800">{title}</h3>
+      <p className="text-gray-600">{description}</p>
+    </div>
+  );
+};
+
+const ProcessStep = ({ number, title, description, details, isLast }) => {
+  return (
+    <div className="flex gap-4 mb-6">
+      <div className="flex flex-col items-center">
+        <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-600 text-white rounded-full flex items-center justify-center font-bold text-lg shadow-md">
+          {number}
+        </div>
+        {!isLast && <div className="w-0.5 h-full bg-gradient-to-b from-blue-600 to-indigo-600 mt-2"></div>}
+      </div>
+      <div className="flex-1 pb-6">
+        <h3 className="font-bold text-lg mb-2 text-gray-800">{title}</h3>
+        <p className="text-gray-600 mb-3">{description}</p>
+        {details && (
+          <ul className="space-y-1.5 ml-4">
+            {details.map((detail, idx) => (
+              <li key={idx} className="text-sm text-gray-600 flex items-start gap-2">
+                <span className="text-blue-600 mt-0.5">•</span>
+                <span>{detail}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const SkillBadge = ({ skill, rating }) => {
+  return (
+    <div className="bg-white p-3 rounded-lg border border-gray-200 hover:border-blue-300 transition-all duration-300">
+      <div className="flex justify-between items-center mb-1">
+        <span className="font-semibold text-sm text-gray-800">{skill}</span>
+        <div className="flex gap-0.5">
+          {[...Array(5)].map((_, i) => (
+            <Star
+              key={i}
+              size={14}
+              className={i < rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default function LeadGenProposal() {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 p-8">
+      <style>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        @keyframes slideInRight {
+          from {
+            opacity: 0;
+            transform: translateX(-30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        @keyframes pulse {
+          0%, 100% {
+            opacity: 1;
+          }
+          50% {
+            opacity: 0.8;
+          }
+        }
+      `}</style>
+      
+      <div className="max-w-5xl mx-auto">
+        {/* Header */}
+        <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-8 rounded-lg shadow-xl mb-8" style={{ animation: 'fadeIn 0.8s ease-out' }}>
+          <h1 className="text-4xl font-bold mb-4">Lead Generation & Email Outreach Proposal</h1>
+          <div className="flex flex-col gap-2 text-blue-100">
+            <p className="text-lg"><strong className="text-white">Prepared for:</strong> Callum Connor</p>
+            <p className="text-lg"><strong className="text-white">Prepared by:</strong> Elyssa Degracia</p>
+            <p className="text-lg"><strong className="text-white">Date:</strong> {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+          </div>
+        </div>
+
+        {/* Executive Summary */}
+        <ProposalSection title="Executive Summary" icon={Target} defaultOpen={true}>
+          <p className="text-gray-700 leading-relaxed mb-4">
+            This proposal outlines a comprehensive lead generation and email outreach service designed to optimize your sales pipeline and maximize the productivity of your appointment setters. By separating lead generation from appointment setting, your team can focus on what they do best: converting qualified prospects into customers.
+          </p>
+          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-blue-600 p-5 rounded-lg mb-4">
+            <p className="text-gray-800 font-bold text-lg mb-2">The Value Proposition:</p>
+            <p className="text-gray-700 leading-relaxed">I will deliver a constant stream of high-quality, pre-qualified leads and manage all cold email outreach at the same rate as your appointment setters. The critical difference is specialization: while your setters excel at conversations and closing, I specialize in research, data enrichment, and crafting compelling email campaigns that generate responses.</p>
+          </div>
+          <div className="bg-blue-600 text-white p-5 rounded-lg shadow-md">
+            <p className="font-bold text-xl mb-2">Bottom Line Impact:</p>
+            <ul className="space-y-2">
+              <li className="flex items-start gap-2">
+                <CheckCircle className="flex-shrink-0 mt-0.5" size={20} />
+                <span><strong>15-20 hours per week</strong> saved per appointment setter</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle className="flex-shrink-0 mt-0.5" size={20} />
+                <span><strong>40-50% increase</strong> in team capacity without additional hiring</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle className="flex-shrink-0 mt-0.5" size={20} />
+                <span><strong>20-30% higher</strong> response and conversion rates</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle className="flex-shrink-0 mt-0.5" size={20} />
+                <span><strong>Same cost</strong> as an appointment setter, but specialized expertise</span>
+              </li>
+            </ul>
+          </div>
+        </ProposalSection>
+
+        {/* The Problem */}
+        <ProposalSection title="The Current Challenge: Why Manual Dialers Shouldn't Generate Their Own Leads" icon={Users}>
+          <div className="space-y-4">
+            <p className="text-gray-700 leading-relaxed mb-4">
+              When your team members using manual dialers are responsible for both finding leads and making calls, several critical inefficiencies emerge that directly impact your bottom line:
+            </p>
+            
+            <div className="bg-red-50 border-2 border-red-300 p-5 rounded-lg mb-4">
+              <h3 className="font-bold text-xl text-red-800 mb-3 flex items-center gap-2">
+                <Clock className="text-red-600" />
+                The Time Drain Problem with Manual Dialing
+              </h3>
+              <p className="text-gray-700 mb-3">Research shows that <strong>60-70% of your dialer's time</strong> is consumed by lead generation tasks when they handle both responsibilities:</p>
+              <ul className="space-y-2 ml-4">
+                <li className="text-gray-700 flex items-start gap-2">
+                  <span className="text-red-600 font-bold">•</span>
+                  <span>Searching databases and LinkedIn for potential prospects</span>
+                </li>
+                <li className="text-gray-700 flex items-start gap-2">
+                  <span className="text-red-600 font-bold">•</span>
+                  <span>Finding and verifying phone numbers and contact information</span>
+                </li>
+                <li className="text-gray-700 flex items-start gap-2">
+                  <span className="text-red-600 font-bold">•</span>
+                  <span>Researching company details and decision-maker roles</span>
+                </li>
+                <li className="text-gray-700 flex items-start gap-2">
+                  <span className="text-red-600 font-bold">•</span>
+                  <span>Manual data entry and list building</span>
+                </li>
+                <li className="text-gray-700 flex items-start gap-2">
+                  <span className="text-red-600 font-bold">•</span>
+                  <span>Updating CRM with prospect details</span>
+                </li>
+              </ul>
+              <p className="text-gray-700 mt-3 font-semibold">Result: Only 30-40% of their time is spent actually dialing and having conversations with prospects.</p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="bg-orange-50 border border-orange-300 p-4 rounded-lg">
+                <h4 className="font-bold text-orange-800 mb-2 flex items-center gap-2">
+                  <Zap size={20} />
+                  Context Switching Kills Momentum
+                </h4>
+                <p className="text-gray-700 text-sm">Constantly shifting between finding leads and making calls reduces effectiveness by up to 40%. Each switch requires mental recalibration, breaking the rhythm and energy needed for successful cold calling.</p>
+              </div>
+              <div className="bg-yellow-50 border border-yellow-300 p-4 rounded-lg">
+                <h4 className="font-bold text-yellow-800 mb-2 flex items-center gap-2">
+                  <BarChart size={20} />
+                  Inconsistent Lead Quality
+                </h4>
+                <p className="text-gray-700 text-sm">When under pressure to hit call quotas, dialers may lower their research standards, resulting in unqualified leads, wrong numbers, and wasted dial time.</p>
+              </div>
+              <div className="bg-purple-50 border border-purple-300 p-4 rounded-lg">
+                <h4 className="font-bold text-purple-800 mb-2 flex items-center gap-2">
+                  <Users size={20} />
+                  Burnout & Turnover Risk
+                </h4>
+                <p className="text-gray-700 text-sm">Juggling high-volume manual dialing with time-consuming research leads to stress, frustration, and higher turnover rates among your calling team.</p>
+              </div>
+              <div className="bg-pink-50 border border-pink-300 p-4 rounded-lg">
+                <h4 className="font-bold text-pink-800 mb-2 flex items-center gap-2">
+                  <Target size={20} />
+                  Misaligned Skill Sets
+                </h4>
+                <p className="text-gray-700 text-sm">Great callers aren't always great researchers. Forcing dialers to do both dilutes their natural strengths and limits call performance.</p>
+              </div>
+            </div>
+
+            <div className="bg-gray-100 border-l-4 border-gray-500 p-5 rounded-lg mt-4">
+              <p className="text-gray-800 font-semibold mb-2">The Real Cost:</p>
+              <p className="text-gray-700">If a manual dialer spends 15 hours per week on lead generation instead of calling, that's <strong>60 hours per month of lost dial time per person</strong>. Multiply that across your team, and you're potentially losing hundreds of qualified conversations and dozens of appointments every month.</p>
+            </div>
+          </div>
+        </ProposalSection>
+
+        {/* The Solution */}
+        <ProposalSection title="The Solution: Dedicated Lead Generation & Email Outreach Specialist" icon={TrendingUp}>
+          <div className="space-y-6">
+            <p className="text-gray-700 leading-relaxed">
+              A specialized lead generation and email outreach service provides a constant stream of high-quality, pre-qualified prospects with verified phone numbers directly to your manual dialers, allowing them to focus exclusively on their core competency: making calls, engaging prospects, and booking appointments.
+            </p>
+
+            <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-300 p-6 rounded-lg">
+              <h3 className="font-bold text-xl text-gray-800 mb-4">How This Changes Everything:</h3>
+              <div className="space-y-4">
+                <div>
+                  <h4 className="font-semibold text-green-800 mb-2">✓ Pure Specialization</h4>
+                  <p className="text-gray-700 text-sm">Your dialers focus 100% on making calls and having conversations. I focus 100% on finding the right prospects, verifying phone numbers, and warming them up through strategic email outreach before they ever get a call.</p>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-green-800 mb-2">✓ Continuous Pipeline Flow</h4>
+                  <p className="text-gray-700 text-sm">No more feast-or-famine cycles. Your dialers receive a steady, predictable stream of qualified leads with verified contact information every single day, ensuring consistent performance and call volume.</p>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-green-800 mb-2">✓ Pre-Warmed Prospects</h4>
+                  <p className="text-gray-700 text-sm">Every lead is pre-researched, pre-qualified, and pre-warmed through personalized email sequences, so when your dialers call, prospects already recognize your company name and understand your value proposition.</p>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-green-800 mb-2">✓ Scalable Without Limits</h4>
+                  <p className="text-gray-700 text-sm">Need more leads? We scale up. Need to focus on a new vertical? We pivot quickly. Your team's capacity expands without proportional increases in headcount or training time.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-4 mt-6">
+              <BenefitCard
+                icon={Clock}
+                title="Massive Time Savings"
+                description="15-20 hours saved per dialer per week equals 60-80 additional calling hours monthly—without hiring anyone new"
+                delay={0}
+              />
+              <BenefitCard
+                icon={Target}
+                title="Laser-Focused Dialers"
+                description="Your team concentrates solely on making calls and conversations—the activities that generate appointments and revenue"
+                delay={0.1}
+              />
+              <BenefitCard
+                icon={CheckCircle}
+                title="Consistent Quality"
+                description="Every lead meets your exact ICP criteria, with verified phone numbers and clear buying signals before reaching your dialers"
+                delay={0.2}
+              />
+            </div>
+          </div>
+        </ProposalSection>
+
+        {/* Detailed Process */}
+        <ProposalSection title="The Complete Lead Generation & Email Outreach Process" icon={ArrowRight}>
+          <p className="text-gray-700 leading-relaxed mb-6">
+            Here's exactly how I'll work to deliver qualified, engaged prospects with verified contact information to your manual dialers:
+          </p>
+          
+          <ProcessStep
+            number={1}
+            title="Deep Dive ICP Definition & Strategy Session"
+            description="Before any outreach begins, we collaborate to create a crystal-clear Ideal Customer Profile and outreach strategy."
+            details={[
+              "Industry verticals, company size ranges, and geographic focus",
+              "Key decision-maker titles and organizational structures",
+              "Pain points, triggers, and buying signals to target",
+              "Disqualification criteria to avoid wasting time on bad fits",
+              "Messaging angles and value propositions that resonate",
+              "Email tone, style, and compliance requirements"
+            ]}
+          />
+          
+          <ProcessStep
+            number={2}
+            title="Multi-Source Prospecting & Database Mining"
+            description="Using advanced tools and platforms, I identify companies and decision-makers that precisely match your ICP."
+            details={[
+              "LinkedIn Sales Navigator advanced search and filters",
+              "Apollo.io, ZoomInfo, or similar B2B databases",
+              "Industry-specific directories and association lists",
+              "Company websites and recent news for trigger events",
+              "Technographic data (technologies they use) when relevant",
+              "Social media signals and engagement patterns"
+            ]}
+          />
+          
+          <ProcessStep
+            number={3}
+            title="Comprehensive Data Enrichment & Verification"
+            description="Every prospect is thoroughly researched and verified to ensure accuracy and relevance before outreach—especially phone numbers for your manual dialers."
+            details={[
+              "Verified business email addresses (using email validation tools)",
+              "Direct phone numbers verified and formatted correctly for dialing",
+              "LinkedIn profiles and decision-maker confirmation",
+              "Company size, revenue estimates, and growth indicators",
+              "Recent company news, funding rounds, or leadership changes",
+              "Key pain points and personalization elements",
+              "Compliance checks (Do Not Call lists, opt-out lists, domain reputation)"
+            ]}
+          />
+          
+          <ProcessStep
+            number={4}
+            title="Lead Qualification & Prioritization Scoring"
+            description="Leads are pre-qualified based on fit, intent, and readiness, then scored to help your setters prioritize their outreach."
+            details={[
+              "Fit Score: How well they match your ICP (industry, size, role)",
+              "Intent Signals: Job postings, funding, technology adoption, growth indicators",
+              "Engagement Score: LinkedIn activity, content engagement, event attendance",
+              "Timeliness: Recent trigger events that create urgency",
+              "Accessibility: Ease of reaching the decision-maker",
+              "Priority tagging: Hot/Warm/Cold leads for setter focus"
+            ]}
+          />
+          
+          <ProcessStep
+            number={5}
+            title="Personalized Cold Email Campaigns & Sequences"
+            description="I craft and execute multi-touch email sequences designed to warm up prospects before your dialers call, significantly improving answer rates and conversation quality."
+            details={[
+              "Personalized subject lines with high open rates",
+              "Value-driven, benefit-focused email copy (not salesy)",
+              "3-5 touch sequences with strategic timing and follow-ups",
+              "A/B testing subject lines, CTAs, and messaging angles",
+              "Email deliverability optimization (domain warming, sending limits)",
+              "Tracking opens, clicks, and replies in real-time",
+              "Pre-warming prospects so they recognize your company when your dialers call",
+              "Nurturing engaged prospects who aren't ready yet",
+              "Immediate handoff of hot leads showing interest to your dialers"
+            ]}
+          />
+          
+          <ProcessStep
+            number={6}
+            title="CRM Integration & Seamless Handoff"
+            description="Qualified leads with verified phone numbers and engaged prospects are organized in your CRM with all relevant context, ready for immediate calling."
+            details={[
+              "Full contact details with verified phone numbers ready to dial",
+              "Company info and research notes for conversation context",
+              "Email conversation history and engagement data",
+              "Lead score and priority level clearly marked",
+              "Personalization talking points and pain points identified",
+              "Best times to call based on timezone and engagement patterns",
+              "Next steps and recommended approach for dialers",
+              "Real-time notifications when leads respond to emails or show interest"
+            ]}
+          />
+          
+          <ProcessStep
+            number={7}
+            title="Continuous Performance Tracking & Optimization"
+            description="I monitor campaign performance, gather feedback from your dialers, and continuously refine the process for better results."
+            details={[
+              "Weekly performance reports: leads delivered, email metrics, call connection rates",
+              "Regular feedback sessions with dialers on lead quality and phone number accuracy",
+              "A/B testing new messaging, industries, or targeting criteria",
+              "ICP refinement based on which leads convert best on calls",
+              "Email copy optimization based on response rates and call outcomes",
+              "Phone number verification improvements to reduce wrong numbers",
+              "Scalability adjustments to match your team's dialing capacity"
+            ]}
+            isLast={true}
+          />
+        </ProposalSection>
+
+        {/* Why Elyssa Section */}
+        <ProposalSection title="Why Choose Elyssa Degracia for This Role?" icon={Star}>
+          <div className="space-y-6">
+            <div className="bg-gradient-to-r from-indigo-50 to-purple-50 border-2 border-indigo-300 p-6 rounded-lg">
+              <h3 className="font-bold text-2xl text-gray-800 mb-4 flex items-center gap-3">
+                <Award className="text-indigo-600" size={28} />
+                Specialized Expertise Where It Matters Most
+              </h3>
+              <p className="text-gray-700 leading-relaxed mb-4">
+                While I have hands-on experience as a cold caller and appointment setter, <strong>my true expertise and passion lie in lead generation, email copywriting, and outreach campaigns</strong>. This is where I excel and where I can deliver the most value to your team.
+              </p>
+              <p className="text-gray-700 leading-relaxed">
+                Having worked both sides of the sales process, I understand exactly what appointment setters need: <strong>high-quality, pre-qualified leads with accurate data and clear context</strong>. I've experienced firsthand the frustration of bad leads, incomplete information, and the time drain of doing research while trying to close deals. That's why I'm committed to delivering only the best.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-white border border-gray-300 p-5 rounded-lg shadow-sm">
+                <h4 className="font-bold text-lg text-gray-800 mb-3 flex items-center gap-2">
+                  <Briefcase className="text-blue-600" size={22} />
+                  Proven Track Record
+                </h4>
+                <ul className="space-y-2">
+                  <li className="text-gray-700 text-sm flex items-start gap-2">
+                    <CheckCircle className="text-green-600 flex-shrink-0 mt-0.5" size={16} />
+                    <span><strong>Cold Caller</strong> for Voice Activation Campaign handling outbound U.S. business verification</span>
+                  </li>
+                  <li className="text-gray-700 text-sm flex items-start gap-2">
+                    <CheckCircle className="text-green-600 flex-shrink-0 mt-0.5" size={16} />
+                    <span><strong>Listing Coordinator</strong> managing product listings and client communications</span>
+                  </li>
+                  <li className="text-gray-700 text-sm flex items-start gap-2">
+                    <CheckCircle className="text-green-600 flex-shrink-0 mt-0.5" size={16} />
+                    <span><strong>Virtual Assistant</strong> with extensive data entry and CRM management experience</span>
+                  </li>
+                  <li className="text-gray-700 text-sm flex items-start gap-2">
+                    <CheckCircle className="text-green-600 flex-shrink-0 mt-0.5" size={16} />
+                    <span><strong>Email & Headline Writer</strong> creating engaging marketing content aligned with brand objectives</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="bg-white border border-gray-300 p-5 rounded-lg shadow-sm">
+                <h4 className="font-bold text-lg text-gray-800 mb-3 flex items-center gap-2">
+                  <Target className="text-blue-600" size={22} />
+                  Key Strengths
+                </h4>
+                <ul className="space-y-2">
+                  <li className="text-gray-700 text-sm flex items-start gap-2">
+                    <CheckCircle className="text-blue-600 flex-shrink-0 mt-0.5" size={16} />
+                    <span><strong>Data accuracy obsession:</strong> Meticulous attention to detail ensures clean, reliable lead data</span>
+                  </li>
+                  <li className="text-gray-700 text-sm flex items-start gap-2">
+                    <CheckCircle className="text-blue-600 flex-shrink-0 mt-0.5" size={16} />
+                    <span><strong>Research efficiency:</strong> Fast, thorough prospecting that identifies high-quality targets</span>
+                  </li>
+                  <li className="text-gray-700 text-sm flex items-start gap-2">
+                    <CheckCircle className="text-blue-600 flex-shrink-0 mt-0.5" size={16} />
+                    <span><strong>Email copywriting:</strong> Compelling, personalized messages that drive engagement and replies</span>
+                  </li>
+                  <li className="text-gray-700 text-sm flex items-start gap-2">
+                    <CheckCircle className="text-blue-600 flex-shrink-0 mt-0.5" size={16} />
+                    <span><strong>Quick learner:</strong> Rapidly adapt to new tools, industries, and messaging strategies</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="font-bold text-lg text-gray-800 mb-4">Technical Proficiency & Tools</h4>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                <SkillBadge skill="Google Sheets" rating={4} />
+                <SkillBadge skill="Canva" rating={4} />
+                <SkillBadge skill="Google Calendar" rating={5} />
+                <SkillBadge skill="Convoso" rating={4} />
+                <SkillBadge skill="Slack" rating={4} />
+                <SkillBadge skill="Data Entry" rating={5} />
+              </div>
+              <p className="text-sm text-gray-600 mt-4 italic">
+                + Quick to learn any new CRM, email platform, or prospecting tool your team uses
+              </p>
+            </div>
+
+            <div className="bg-blue-50 border-l-4 border-blue-600 p-5 rounded-lg">
+              <h4 className="font-bold text-gray-800 mb-2">Resume Available for Review</h4>
+              <p className="text-gray-700 text-sm">
+                My complete professional resume is attached to this proposal for your detailed review. It includes my full work history, education, and professional portfolio link.
+              </p>
+            </div>
+
+            <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white p-6 rounded-lg shadow-md">
+              <h4 className="font-bold text-xl mb-3">The Bottom Line:</h4>
+              <p className="leading-relaxed">
+                You're getting a specialist who lives and breathes lead generation and email outreach, at the same rate as your manual dialers. While your dialers focus on making calls and booking appointments, I'll focus on filling their pipeline with qualified, pre-warmed prospects with verified phone numbers who are ready to have a conversation.
+              </p>
+            </div>
+          </div>
+        </ProposalSection>
+
+        {/* Key Benefits */}
+        <ProposalSection title="Complete Benefits Breakdown & ROI Analysis" icon={TrendingUp}>
+          <div className="space-y-6">
+            <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-300 p-6 rounded-lg">
+              <h3 className="font-bold text-xl mb-4 text-gray-800 flex items-center gap-2">
+                <Clock className="text-green-600" size={24} />
+                Benefit #1: Massive Time Savings & Productivity Gains
+              </h3>
+              <div className="space-y-3">
+                <div className="bg-white p-4 rounded-lg border border-green-200">
+                  <p className="font-semibold text-gray-800 mb-2">Per Manual Dialer:</p>
+                  <ul className="space-y-2 text-gray-700">
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="text-green-600 mt-1 flex-shrink-0" size={20} />
+                      <span><strong>15-20 hours per week</strong> freed up from lead generation tasks</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="text-green-600 mt-1 flex-shrink-0" size={20} />
+                      <span><strong>60-80 additional calling hours per month</strong> for actual conversations</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="text-green-600 mt-1 flex-shrink-0" size={20} />
+                      <span><strong>40-50% capacity increase</strong> without hiring additional dialers</span>
+                    </li>
+                  </ul>
+                </div>
+                <div className="bg-white p-4 rounded-lg border border-green-200">
+                  <p className="font-semibold text-gray-800 mb-2">Across Your Entire Team:</p>
+                  <p className="text-gray-700 mb-2">If you have 5 manual dialers, that's:</p>
+                  <ul className="space-y-2 text-gray-700">
+                    <li className="flex items-start gap-2">
+                      <ArrowRight className="text-green-600 mt-1 flex-shrink-0" size={20} />
+                      <span><strong>75-100 hours per week</strong> of freed-up calling time</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <ArrowRight className="text-green-600 mt-1 flex-shrink-0" size={20} />
+                      <span><strong>300-400 hours per month</strong> redirected to revenue-generating calls and conversations</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <ArrowRight className="text-green-600 mt-1 flex-shrink-0" size={20} />
+                      <span><strong>Equivalent to hiring 2-3 additional dialers</strong> without the cost, training, or management overhead</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-300 p-6 rounded-lg">
+              <h3 className="font-bold text-xl mb-4 text-gray-800 flex items-center gap-2">
+                <Target className="text-blue-600" size={24} />
+                Benefit #2: Dramatically Improved Conversion Rates
+              </h3>
+              <div className="space-y-3">
+                <div className="bg-white p-4 rounded-lg border border-blue-200">
+                  <p className="font-semibold text-gray-800 mb-2">Higher Quality = Better Call Results:</p>
+                  <ul className="space-y-2 text-gray-700">
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="text-blue-600 mt-1 flex-shrink-0" size={20} />
+                      <span><strong>20-30% higher email response rates</strong> from personalized, well-researched outreach</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="text-blue-600 mt-1 flex-shrink-0" size={20} />
+                      <span><strong>Better call connection rates</strong> with verified, accurate phone numbers</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="text-blue-600 mt-1 flex-shrink-0" size={20} />
+                      <span><strong>35-45% better meeting-to-close ratios</strong> because leads are pre-qualified and pre-warmed</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="text-blue-600 mt-1 flex-shrink-0" size={20} />
+                      <span><strong>Shorter sales cycles</strong> since prospects recognize your company from email nurturing</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="text-blue-600 mt-1 flex-shrink-0" size={20} />
+                      <span><strong>Warmer conversations</strong> because prospects have already received value-driven emails</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="text-blue-600 mt-1 flex-shrink-0" size={20} />
+                      <span><strong>Fewer no-shows</strong> because leads understand your value before the call</span>
+                    </li>
+                  </ul>
+                </div>
+                <div className="bg-white p-4 rounded-lg border border-blue-200">
+                  <p className="font-semibold text-gray-800 mb-2">Consistent Pipeline Flow:</p>
+                  <ul className="space-y-2 text-gray-700">
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="text-blue-600 mt-1 flex-shrink-0" size={20} />
+                      <span>Predictable lead volume every day (no more feast-or-famine)</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="text-blue-600 mt-1 flex-shrink-0" size={20} />
+                      <span>Better revenue forecasting with steady pipeline metrics</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="text-blue-600 mt-1 flex-shrink-0" size={20} />
+                      <span>Reduced pressure on setters to "find leads fast"</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-r from-purple-50 to-pink-50 border-2 border-purple-300 p-6 rounded-lg">
+              <h3 className="font-bold text-xl mb-4 text-gray-800 flex items-center gap-2">
+                <Users className="text-purple-600" size={24} />
+                Benefit #3: Enhanced Team Efficiency & Morale
+              </h3>
+              <div className="space-y-3">
+                <div className="bg-white p-4 rounded-lg border border-purple-200">
+                  <p className="font-semibold text-gray-800 mb-2">Happier, More Productive Dialers:</p>
+                  <ul className="space-y-2 text-gray-700">
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="text-purple-600 mt-1 flex-shrink-0" size={20} />
+                      <span>Your dialers do what they love: <strong>making calls and talking to prospects</strong></span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="text-purple-600 mt-1 flex-shrink-0" size={20} />
+                      <span>No more tedious research tasks that drain energy and motivation</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="text-purple-600 mt-1 flex-shrink-0" size={20} />
+                      <span><strong>Reduced burnout and stress</strong> from juggling too many responsibilities</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="text-purple-600 mt-1 flex-shrink-0" size={20} />
+                      <span><strong>Lower turnover rates</strong> as team members feel more fulfilled and successful</span>
+                    </li>
+                  </ul>
+                </div>
+                <div className="bg-white p-4 rounded-lg border border-purple-200">
+                  <p className="font-semibold text-gray-800 mb-2">Clear Role Specialization:</p>
+                  <ul className="space-y-2 text-gray-700">
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="text-purple-600 mt-1 flex-shrink-0" size={20} />
+                      <span>Everyone plays to their strengths and natural talents</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="text-purple-600 mt-1 flex-shrink-0" size={20} />
+                      <span>Faster skill development when focus is singular, not split</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="text-purple-600 mt-1 flex-shrink-0" size={20} />
+                      <span>Better performance metrics and clearer accountability</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-r from-orange-50 to-yellow-50 border-2 border-orange-300 p-6 rounded-lg">
+              <h3 className="font-bold text-xl mb-4 text-gray-800 flex items-center gap-2">
+                <Mail className="text-orange-600" size={24} />
+                Benefit #4: Unlimited Scalability & Flexibility
+              </h3>
+              <div className="space-y-3">
+                <div className="bg-white p-4 rounded-lg border border-orange-200">
+                  <p className="font-semibold text-gray-800 mb-2">Growth Without Growing Pains:</p>
+                  <ul className="space-y-2 text-gray-700">
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="text-orange-600 mt-1 flex-shrink-0" size={20} />
+                      <span><strong>Scale lead volume up or down</strong> based on your team's capacity and market conditions</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="text-orange-600 mt-1 flex-shrink-0" size={20} />
+                      <span><strong>Pivot to new industries or ICPs quickly</strong> without retraining your entire sales team</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="text-orange-600 mt-1 flex-shrink-0" size={20} />
+                      <span><strong>Test new markets or verticals</strong> with minimal risk or investment</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="text-orange-600 mt-1 flex-shrink-0" size={20} />
+                      <span>Expand sales capacity without the overhead of hiring, onboarding, and managing more research staff</span>
+                    </li>
+                  </ul>
+                </div>
+                <div className="bg-white p-4 rounded-lg border border-orange-200">
+                  <p className="font-semibold text-gray-800 mb-2">Predictable Performance:</p>
+                  <ul className="space-y-2 text-gray-700">
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="text-orange-600 mt-1 flex-shrink-0" size={20} />
+                      <span>Reliable pipeline metrics for accurate revenue forecasting</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="text-orange-600 mt-1 flex-shrink-0" size={20} />
+                      <span>Consistent daily lead delivery (no bottlenecks or delays)</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="text-orange-600 mt-1 flex-shrink-0" size={20} />
+                      <span>Easier to plan hiring, budgets, and growth initiatives</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-r from-gray-700 to-gray-900 text-white p-6 rounded-lg shadow-lg">
+              <h3 className="font-bold text-2xl mb-4">ROI Summary: The Numbers Don't Lie</h3>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <p className="font-semibold mb-2 text-blue-300">Time Savings Per Setter:</p>
+                  <p className="text-lg">15-20 hours/week = <strong className="text-yellow-300">60-80 hours/month</strong></p>
+                </div>
+                <div>
+                  <p className="font-semibold mb-2 text-blue-300">Capacity Increase:</p>
+                  <p className="text-lg"><strong className="text-yellow-300">40-50%</strong> without new hires</p>
+                </div>
+                <div>
+                  <p className="font-semibold mb-2 text-blue-300">Conversion Improvement:</p>
+                  <p className="text-lg"><strong className="text-yellow-300">20-30%</strong> better response rates</p>
+                </div>
+                <div>
+                  <p className="font-semibold mb-2 text-blue-300">Cost Efficiency:</p>
+                  <p className="text-lg"><strong className="text-yellow-300">Same rate</strong> as appointment setters</p>
+                </div>
+              </div>
+              <div className="mt-4 pt-4 border-t border-gray-600">
+                <p className="text-center text-lg">
+                  <strong className="text-yellow-300">Result:</strong> More conversations, higher quality leads, happier team, and significantly more closed deals—all at the same cost structure.
+                </p>
+              </div>
+            </div>
+          </div>
+        </ProposalSection>
+
+        {/* Pricing & Investment */}
+        <ProposalSection title="Pricing & Investment Structure" icon={CheckCircle}>
+          <div className="space-y-6">
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-300 p-6 rounded-lg">
+              <h3 className="font-bold text-xl mb-4 text-gray-800">Simple, Transparent Pricing</h3>
+              <div className="bg-white p-5 rounded-lg border border-blue-200">
+                <p className="text-gray-800 text-lg mb-3">
+                  <strong className="text-blue-600">My rate is the same as your appointment setters.</strong>
+                </p>
+                <p className="text-gray-700 leading-relaxed mb-3">
+                  The critical difference is <strong>specialization and expertise</strong>: while your appointment setters excel at conversations and closing, I specialize exclusively in lead generation, data enrichment, and email outreach campaigns that drive engagement and replies.
+                </p>
+                <div className="bg-blue-50 p-4 rounded-lg mt-4">
+                  <p className="text-gray-800 font-semibold mb-2">What You Get for the Same Cost:</p>
+                  <ul className="space-y-2">
+                    <li className="text-gray-700 flex items-start gap-2">
+                      <CheckCircle className="text-blue-600 flex-shrink-0 mt-0.5" size={18} />
+                      <span>A dedicated specialist focused 100% on filling your pipeline</span>
+                    </li>
+                    <li className="text-gray-700 flex items-start gap-2">
+                      <CheckCircle className="text-blue-600 flex-shrink-0 mt-0.5" size={18} />
+                      <span>Proven expertise in research, data accuracy, and email copywriting</span>
+                    </li>
+                    <li className="text-gray-700 flex items-start gap-2">
+                      <CheckCircle className="text-blue-600 flex-shrink-0 mt-0.5" size={18} />
+                      <span>15-20 hours per week freed up for EACH of your appointment setters</span>
+                    </li>
+                    <li className="text-gray-700 flex items-start gap-2">
+                      <CheckCircle className="text-blue-600 flex-shrink-0 mt-0.5" size={18} />
+                      <span>Higher quality leads with better conversion rates</span>
+                    </li>
+                    <li className="text-gray-700 flex items-start gap-2">
+                      <CheckCircle className="text-blue-600 flex-shrink-0 mt-0.5" size={18} />
+                      <span>Scalable pipeline without proportional cost increases</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-300 p-6 rounded-lg">
+              <h3 className="font-bold text-xl mb-4 text-gray-800">Why This Investment Makes Sense</h3>
+              <p className="text-gray-700 leading-relaxed mb-4">
+                The investment in dedicated lead generation pays for itself through increased productivity and higher conversion rates. By freeing up your appointment setters to focus on their core strength—closing deals—you effectively <strong>multiply your sales capacity by 40-50% without adding headcount</strong>.
+              </p>
+              <div className="bg-white p-5 rounded-lg border border-green-200">
+                <p className="font-semibold text-gray-800 mb-3">Here's the Math:</p>
+                <div className="space-y-3 text-gray-700">
+                  <div className="flex items-start gap-3">
+                    <div className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center font-bold flex-shrink-0 text-sm">1</div>
+                    <p><strong>Current state:</strong> Your setters spend 60-70% of time on lead gen, only 30-40% selling</p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center font-bold flex-shrink-0 text-sm">2</div>
+                    <p><strong>With dedicated lead gen:</strong> Setters spend 100% of time selling and closing</p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center font-bold flex-shrink-0 text-sm">3</div>
+                    <p><strong>Result:</strong> 40-50% more selling time + higher quality leads = significantly more closed deals</p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center font-bold flex-shrink-0 text-sm">4</div>
+                    <p><strong>ROI:</strong> Even a modest increase in conversion rates easily covers the investment</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ProposalSection>
+
+        {/* Next Steps */}
+        <ProposalSection title="Next Steps: Let's Get Started" icon={ArrowRight}>
+          <div className="space-y-6">
+            <p className="text-gray-700 leading-relaxed text-lg">
+              Ready to transform your sales process, free up your appointment setters, and scale your pipeline with high-quality leads?
+            </p>
+            
+            <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-8 rounded-lg shadow-lg">
+              <h3 className="font-bold text-2xl mb-6">Here's How We'll Begin:</h3>
+              <div className="space-y-4">
+                <div className="flex items-start gap-4">
+                  <div className="bg-white text-blue-600 rounded-full w-12 h-12 flex items-center justify-center font-bold text-xl flex-shrink-0 shadow-md">1</div>
+                  <div>
+                    <p className="font-semibold text-lg mb-1">Discovery & Strategy Call (30-45 min)</p>
+                    <p className="text-blue-100">We'll discuss your specific ICP, target markets, current challenges, and success metrics to create a customized lead generation strategy</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="bg-white text-blue-600 rounded-full w-12 h-12 flex items-center justify-center font-bold text-xl flex-shrink-0 shadow-md">2</div>
+                  <div>
+                    <p className="font-semibold text-lg mb-1">Strategic Planning & Setup (2-3 days)</p>
+                    <p className="text-blue-100">I'll develop your lead generation framework, set up prospecting workflows, integrate with your CRM, and prepare email sequences</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="bg-white text-blue-600 rounded-full w-12 h-12 flex items-center justify-center font-bold text-xl flex-shrink-0 shadow-md">3</div>
+                  <div>
+                    <p className="font-semibold text-lg mb-1">Launch & First Lead Delivery (5-7 business days)</p>
+                    <p className="text-blue-100">You'll start receiving qualified, pre-warmed leads in your CRM, ready for your appointment setters to engage immediately</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="bg-white text-blue-600 rounded-full w-12 h-12 flex items-center justify-center font-bold text-xl flex-shrink-0 shadow-md">4</div>
+                  <div>
+                    <p className="font-semibold text-lg mb-1">Continuous Optimization & Reporting</p>
+                    <p className="text-blue-100">Weekly performance reports, regular feedback sessions, and ongoing refinement to maximize results and ROI</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-r from-purple-50 to-pink-50 border-2 border-purple-300 p-6 rounded-lg">
+              <h3 className="font-bold text-xl mb-3 text-gray-800">What Happens After We Start?</h3>
+              <ul className="space-y-3 text-gray-700">
+                <li className="flex items-start gap-3">
+                  <CheckCircle className="text-purple-600 flex-shrink-0 mt-0.5" size={20} />
+                  <span><strong>Week 1:</strong> Setup, ICP refinement, initial prospecting, and first email campaigns launched</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle className="text-purple-600 flex-shrink-0 mt-0.5" size={20} />
+                  <span><strong>Week 2-3:</strong> Daily lead delivery begins, your setters start engaging prospects, feedback loops established</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle className="text-purple-600 flex-shrink-0 mt-0.5" size={20} />
+                  <span><strong>Week 4+:</strong> Full pipeline flow, performance tracking, continuous optimization based on conversion data</span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="text-center py-6 bg-gray-50 rounded-lg border border-gray-200">
+              <p className="text-gray-800 text-lg mb-2 font-semibold">
+                Let's discuss how we can accelerate your pipeline and free your team to focus on closing deals.
+              </p>
+              <p className="text-gray-600 italic">
+                I'm ready to start filling your pipeline with qualified prospects within the next week.
+              </p>
+            </div>
+          </div>
+        </ProposalSection>
+
+        {/* Footer */}
+        <div className="mt-8 bg-gradient-to-r from-gray-700 to-gray-900 text-white p-8 rounded-lg text-center shadow-xl">
+          <p className="font-bold text-2xl mb-3">Elyssa Degracia</p>
+          <p className="text-lg mb-2">Lead Generation & Email Outreach Specialist</p>
+          <p className="text-blue-300 mb-4">Professional resume and portfolio available upon request</p>
+          <div className="pt-4 border-t border-gray-600">
+            <p className="text-gray-300 italic">
+              "Dedicated to delivering high-quality leads and maximizing your sales team's productivity."
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
